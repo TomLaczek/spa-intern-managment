@@ -1,0 +1,13 @@
+{
+  "message": "hello i18n !!",
+  "first_name":"First Name",
+  "last_name":"Last Name",
+  "avatar":"Avatar",
+  "No":"No",
+  "search":"Search",
+  "home":"Home",
+  "add_intern":"Add Intern",
+  "intern_list":"Intern List",
+  "edit":"Edit",
+  "submit":"Submit"
+}
