@@ -3,24 +3,38 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 Vue.use(Vuex)
+const url = "https://reqres.in/api/users"
 
 export default new Vuex.Store({
   state: {
-    users:[],
+    internList:[],
 
   },
   mutations: {
-    CREATE_USER_LIST(state,data){
-      state.users=data
+    PUSH_DATA_TO_ARRAY(state,responseData){
+      responseData.map((internData)=>{
+        state.internList.push(internData)
+      })
+      //state.internList.push(responseData)
+    },
+    NUMBER_OF_PAGES(state,data){
+      state.pages=data
     }
   },
   actions: {
-    loadPage({commit}, number){ 
-      this.state.users=[];
+    countPages({commit}){
+      this.state.internList=[];
       return axios
-        .get(`https://reqres.in/api/users?page=${number}`)
+        .get(url)
         .then((response)=>{
-          commit("CREATE_USER_LIST",response.data.data)
+          commit("NUMBER_OF_PAGES", response.data.total_pages)
+        })
+    },
+    downloadPageData({commit},number){
+      return axios
+        .get(url+`?page=${number}`)
+        .then((response)=>{
+          commit("PUSH_DATA_TO_ARRAY",response.data.data)
         })
     },
     createUser(){
@@ -30,8 +44,11 @@ export default new Vuex.Store({
   modules: {
   },
   getters:{
-    usersList(state){
-      return state.users
-    }
+    totalPages(state){
+      return state.pages
+    }, 
+    internList(state){
+      return state.internList
+    },
   }
 })

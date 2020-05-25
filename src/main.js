@@ -12,5 +12,8 @@ new Vue({
   store,
   i18n,
   vuetify,
+  created(){
+    this.$store.dispatch("countPages")
+  },
   render: h => h(App)
 }).$mount('#app')

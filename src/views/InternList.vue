@@ -9,14 +9,27 @@
                      <v-text-field prepend-inner-icon="mdi-search" :label="$t('search')" clearable></v-text-field>
                 </v-col>
             </v-row>
-            <v-row class="justify-center align-center">
+            <v-row class="justify-center align-center" v-if="!this.show">
+                <v-col cols="6">
+                    <v-progress-linear :active="this.loader" height="10" indeterminate rounded></v-progress-linear>
+                </v-col>
+            </v-row>
+            <v-row class="justify-center align-center" v-if="this.show">
                 <v-col cols="12">
                     <v-data-table
                         :headers="headers"
-                        :items="users"
-                        :items-per-page="5"
+                        :items="internList"
+                        :items-per-page="10"
                         class="elevation-1"
-                    ></v-data-table>
+                    >
+                    <template v-slot:item.avatar="{ item }">
+                    <img
+                       :src="item"
+                        max-heigth="20"
+                    />
+                    </template>
+                    
+                    </v-data-table>
                 </v-col>
             </v-row>
         </v-container>
@@ -50,9 +63,20 @@
 export default {
     name:"userList",
     data:()=>{
-        return {
-            pageNumber:1,
-            headers:[
+        return{
+            loader:false,
+            show:false,
+        }
+    },
+    computed:{
+        internList(){
+            return this.$store.getters.internList
+        },
+        totalPages(){
+            return this.$store.getters.totalPages
+        },
+        headers(){
+            return [
                 {
                     text: this.$t("No"),
                     value: 'id'
@@ -67,23 +91,36 @@ export default {
                 },
                 {
                     text: this.$t("last_name"),
-                    last_name:'last_name'
+                    value:'last_name'
                 }
-            ],
-        }
-    },
-    computed:{
-        users(){
-            return this.$store.getters.usersList
+            ]
         }
     },
     mounted(){
-        this.$store.dispatch("loadPage",this.pageNumber)
-        .then(() => {
-            console.log(this.users)
-        }).catch(() => {
-            
-        });
+        this.loader=true;
+        this.fillInternData()        
+    },
+    methods:{
+        fillInternData(){
+            if(this.totalPages){
+                this.loopThroughtData(this.totalPages)
+            } else{
+                this.$store.dispatch("countPages")
+                .then(()=>{
+                    this.loopThroughtData(this.totalPages)
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+            }
+            this.loader=false;
+             this.show=true;
+        },
+        loopThroughtData(totalPages){
+            for(var i = 1; i<=totalPages;i++){
+                this.$store.dispatch("downloadPageData",i)
+            }
+        }
     }
 }
 </script>
