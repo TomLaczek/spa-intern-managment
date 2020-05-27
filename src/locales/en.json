@@ -1,7 +1,7 @@
 {
   "first_name":"First Name",
   "last_name":"Last Name",
-  "avatar":"Avatar",
+  "avatar":"Avatar URL adress",
   "action":"Action",
   "No":"No",
   "search":"Search",
@@ -19,5 +19,8 @@
   "required":"This field is required..",
   "min":"Add more letters",
   "max":"Too many letters",
-  "regex":"You have used inncorrect character. Only letters, numbers, special signs"
+  "regex":"You have used inncorrect character. Only letters, numbers, special signs",
+  "internEdited":"Intern data has been edditted.",
+  "deletePossitive":"Intern data has been deleted.",
+  "somethingWentWrong":"Something went wrong... Try again later"
 }

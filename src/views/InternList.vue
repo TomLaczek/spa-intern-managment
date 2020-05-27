@@ -116,7 +116,7 @@ export default {
             }
         },
         go(interdId){
-            this.$router.push({name:"EditIntern", params:{id:Number(interdId)}});
+            this.$router.push({name:"EditIntern", params:{intern_id:interdId}});
         },
         deleteItem(item){
             console.log(item)

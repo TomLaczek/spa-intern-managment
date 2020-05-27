@@ -9,12 +9,8 @@ const url = "https://reqres.in/api/users"
 export default new Vuex.Store({
   state: {
     internList:[],
-    responseInformation:null,
   },
   mutations: {
-    LAST_RESPONSE_INFORMATION(state,responseData){
-      state.responseInformation = responseData;
-    },
     PUSH_DATA_TO_ARRAY(state,responseData){
       responseData.map((internData)=>{
         state.internList.push(internData)
@@ -44,9 +40,6 @@ export default new Vuex.Store({
           commit("PUSH_DATA_TO_ARRAY",response.data.data)
         })
     },
-    createUser(){
-      return axios
-    }
   },
   modules: {
   },
@@ -57,13 +50,8 @@ export default new Vuex.Store({
     internList(state){
       return state.internList
     },
-    response(state){
-      return state.responseInformation
-    },
-    editIntern(state,internId){
-      state.internList.filter(intern=>{
-        return intern.id == internId
-      })
+    getIntern: (state) => (id) => {
+      return state.internList.find( intern => intern.id === id)
     }
   }
 })

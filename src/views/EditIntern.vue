@@ -1,30 +1,54 @@
 <template>
-    <div id="addIntern">
+    <div id="editIntern">
         <v-container>
+            <v-snackbar
+                v-model="submitPossitive"
+                >
+                {{ $t("internEdited") }}
+                <v-btn
+                    color="pink"
+                    text
+                    @click="submitPossitive = false"
+                >
+                    Zamknij
+                </v-btn>
+            </v-snackbar>
+            <v-snackbar
+                v-model="somethingWentWrong"
+                >
+                {{ $t("somethingWentWrong") }}
+                <v-btn
+                    color="pink"
+                    text
+                    @click="somethingWentWrong = false"
+                >
+                    Zamknij
+                </v-btn>
+            </v-snackbar>
             <v-row class="justify-center align-center">
                 <div class="title">{{$t("edit_intern")}}</div>
             </v-row>
-            <v-row class="justify-end align-center">
-                <v-col cols="10">
+            <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
+                <v-form lazy-validation @submit.prevent="handleSubmit(submit)">
                     <v-row class="justify-end align-center">
-                        <v-btn rounded outlined class="mx-2" min-width="50">
-                            <v-icon left>mdi-content-save</v-icon>
-                            <span>{{$t("save")}}</span>
-                        </v-btn>
-                        <v-btn rounded outlined class="mx-2" min-width="50">
-                            <v-icon left>mdi-delete</v-icon>
-                            <span>{{$t("delete")}}</span>
-                        </v-btn>
-                    </v-row>
-                </v-col>
-            </v-row>   
-            <v-row class="justify-center align-center">
-                <ValidationObserver ref="observer" v-slot="{ handleSubmit, reset }">
-                    <v-form ref="form" lazy-validation @submit.prevent="handleSubmit(submit)" @reset.prevent="reset">
+                        <v-col cols="10">
+                            <v-row class="justify-end align-center">
+                                <v-btn type="submit" rounded outlined class="mx-2" min-width="50">
+                                    <v-icon left>mdi-content-save</v-icon>
+                                    <span>{{$t("save")}}</span>
+                                </v-btn>
+                                <v-btn @click="deleteIntern" outlined class="mx-2" min-width="50">
+                                    <v-icon left>mdi-delete</v-icon>
+                                    <span>{{$t("delete")}}</span>
+                                </v-btn>
+                            </v-row>
+                        </v-col>
+                    </v-row>   
+                    <v-row class="justify-center align-center">
                         <v-col cols="8">
                             <ValidationProvider v-slot="{ errors }" name="name" :rules="{required:true, alpha:true, min:3, max:20}">
                                 <v-text-field 
-                                v-model="internData.name" 
+                                v-model="edittingIntern.first_name" 
                                 :error-messages="errors"
                                 :label='$t("first_name")' 
                                 clearable
@@ -34,7 +58,7 @@
                         <v-col cols="8">
                             <ValidationProvider v-slot="{ errors }" name="lastName" :rules="{required:true, alpha:true, min:3, max:20}">
                                 <v-text-field 
-                                v-model="internData.lastName" 
+                                v-model="edittingIntern.last_name" 
                                 :error-messages="errors"
                                 :label='$t("last_name")' 
                                 clearable
@@ -44,68 +68,108 @@
                         <v-col cols="8">
                             <ValidationProvider v-slot="{ errors }" name="avatarUrl" :rules="{ required:true, regex: /(https?:\/\/.*\.(?:png|jpg))/i }">
                                 <v-text-field 
-                                v-model="internData.avatarUrl"
+                                v-model="edittingIntern.avatar"
                                 :error-messages="errors" 
                                 :label='$t("avatar")' 
                                 clearable
                                 ></v-text-field>
                             </ValidationProvider>
                         </v-col>
-                    </v-form>
-                </ValidationObserver>
-            </v-row>
+                    </v-row>
+                </v-form>
+            </ValidationObserver>
         </v-container>
     </div>
 </template>
 <script>
+import axios from 'axios'
+import { required, max, min, alpha, regex} from 'vee-validate/dist/rules'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+setInteractionMode('eager')
+extend('required', {
+    ...required,
+    message: "test",
+})
+extend('alpha', {
+    ...alpha,
+    message: "test",
+})
+extend('regex',{
+    ...regex,
+    message: "test",
+})
+extend('max', {
+    ...max,
+    message: "test",
+})
+extend('min', {
+    ...min,
+    message: "test",
+})
 export default {
     name:'addingIntern',
-    props:{
-        id:{
-            type:Number
-        }
+    components: {
+        ValidationProvider,
+        ValidationObserver,
     },
     data() {
         return{
-            internId: this.$route.params.id,
-
+            submitPossitive:false,
+            somethingWentWrong:false
         };
     },
     computed:{
+        internId(){
+            return parseInt(this.$route.params.intern_id)
+        },
         internData(){
-            return this.$store.getters.editIntern(this.internId)
+            return this.$store.getters.getIntern(this.internId)
+        },
+        edittingIntern(){
+            return {
+                first_name: this.internData.first_name,
+                last_name: this.internData.last_name,
+                avatar: this.internData.avatar,
+                id: this.internData.id
+            }
         }
     },
     methods:{
-        // saveIntern(){
-        //     let internData = {
-        //         internName: this.name,
-        //         internLastName: this.lastName,
-        //         internEmail: this.avatar
-        //     }
-        //     this.$store.dispath('editIntern')
-        //     .then(()=>{
-        //         if(responses.headers.status>=200 && responses.headers.status<202) console.log('zedytowano')
-        //         else if(responses.headers.status>201 && responses.headers.status<300){
-        //             console.log('coś poszło nie tak')
-        //         }
-        //         else if(responses.headers.status>=400 && responses.headers.status<500){
-        //             console.log('nieoczekiwany błąd')
-        //         }
-        //     })
-        // },
-        // deleteIntern(){
-        //     this.$store.dispath('deleteIntern',id)
-        //     .then(()=>{
-        //         if(responses.headers.status>=200 && responses.headers.status<202) console.log('usunięto')
-        //         else if(responses.headers.status>201 && responses.headers.status<300){
-        //             console.log('coś poszło nie tak')
-        //         }
-        //         else if(responses.headers.status>=400 && responses.headers.status<500){
-        //             console.log('nieoczekiwany błąd')
-        //         }
-        //     })
-        // }
+        submit(){
+             this.$refs.observer.validate()
+             .then(result=>{
+                if(result){
+                    return axios.put(`https://reqres.in/api/users/${this.internData.id}`, this.edittingIntern)
+                    .then((response)=>{
+                        if(response.status == 201 || response.status == 200){
+                            this.submitPossitive=true;
+                            this.internData.first_name = this.edittingIntern.first_name;
+                            this.internData.last_name = this.edittingIntern.last_name;
+                            this.internData.avatar = this.edittingIntern.avatar;
+                        }else{
+                            this.somethingWentWrong = true;
+                        }
+                    })
+                    .catch(()=>{
+                        this.somethingWentWrong = true;
+                    })
+                }
+                 
+             })
+        },
+        deleteIntern(){
+            return axios.delete(`https://reqres.in/api/users/${this.internData.id}`)
+            .then((response)=>{
+                if(response.status == 204){
+                    this.$router.push({name:"InternList"})
+                }else{
+                    this.somethingWentWrong = true;
+                }
+            })
+            .catch(()=>{
+                this.somethingWentWrong = true;
+            }) 
+        }
     }
 }
 </script>
