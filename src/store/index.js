@@ -4,6 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 const url = "https://reqres.in/api/users"
+//const url = 'https://reqres.in/app/'
 
 export default new Vuex.Store({
   state: {
@@ -18,22 +19,15 @@ export default new Vuex.Store({
       responseData.map((internData)=>{
         state.internList.push(internData)
       })
-      //state.internList.push(responseData)
     },
     NUMBER_OF_PAGES(state,data){
       state.pages=data
     }
   },
   actions: {
-    addNewIntern({commit},internData){
+    addNewIntern(internData){
       return axios
         .post(url,internData)
-        .then((response)=>{
-          console.log(response)
-          commit("LAST_RESPONSE_INFORMATION",response)
-        }).catch((err)=>{
-          commit("LAST_RESPONSE_INFORMATION",err)
-        })
     },
     countPages({commit}){
       this.state.internList=[];

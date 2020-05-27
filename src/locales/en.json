@@ -1,5 +1,4 @@
 {
-  "message": "hello i18n !!",
   "first_name":"First Name",
   "last_name":"Last Name",
   "avatar":"Avatar",
@@ -11,5 +10,14 @@
   "edit":"Edit",
   "submit":"Add",
   "save":"Save",
-  "delete":"Delete"
+  "delete":"Delete",
+  "internAdded":"Intern has beed added succesfully!",
+  "internNotAdded":"Something went wrong... Try again later",
+  "alpha":"Only letters",
+  "required":"This field is required..",
+  "min":"Add more letters",
+  "max":"Too many letters",
+  "regex":"You have used inncorrect character. Only letters, numbers, special signs"
+
+
 }
