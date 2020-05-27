@@ -1,17 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
   const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path:'/add/',
+    path:'/',
     name: 'AddIntern',
     component: () => import(/*webpackChunkName:"edit-intern"*/ '../views/AddIntern.vue'),
   },
