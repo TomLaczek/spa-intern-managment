@@ -2,10 +2,12 @@
   "first_name":"First Name",
   "last_name":"Last Name",
   "avatar":"Avatar",
+  "action":"Action",
   "No":"No",
   "search":"Search",
   "home":"Home",
   "add_intern":"Add Intern",
+  "edit_intern":"Edit intern",
   "intern_list":"Intern List",
   "edit":"Edit",
   "submit":"Add",
@@ -18,6 +20,4 @@
   "min":"Add more letters",
   "max":"Too many letters",
   "regex":"You have used inncorrect character. Only letters, numbers, special signs"
-
-
 }

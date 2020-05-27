@@ -59,6 +59,11 @@ export default new Vuex.Store({
     },
     response(state){
       return state.responseInformation
+    },
+    editIntern(state,internId){
+      state.internList.filter(intern=>{
+        return intern.id == internId
+      })
     }
   }
 })

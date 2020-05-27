@@ -24,7 +24,7 @@ Vue.use(VueRouter)
     path:'/edit/:id',
     name:'EditIntern',
     component: () => import(/*webpackChunkName:"edit-intern"*/ '../views/EditIntern.vue'),
-    props:true,
+    props:{id:'id'},
   },
   {
     path: '/about',

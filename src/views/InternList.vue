@@ -24,39 +24,29 @@
                     >
                     <template v-slot:item.avatar="{ item }">
                     <img
-                       :src="item"
+                       :src="item.avatar"
                         max-heigth="20"
                     />
                     </template>
-                    
+                    <template v-slot:item.actions="{ item }">
+                        <v-icon
+                            small
+                            class="mr-2"
+                            @click="go(item.id)"
+                        >
+                            mdi-pencil
+                        </v-icon>
+                        <v-icon
+                            small
+                            @click="deleteItem(item)"
+                        >
+                            mdi-delete
+                        </v-icon>
+                    </template>
                     </v-data-table>
                 </v-col>
             </v-row>
         </v-container>
-        <div class="container">
-            <div class="">
-                <div class="">
-                   
-                </div>
-                <!-- <div class="">
-                    <table>
-                        <tr>
-                            <td>{{$t("No")}}</td>
-                            <td>{{$t("avatar")}}</td>
-                            <td>{{$t("first_name")}}</td>
-                            <td>{{$t("last_name")}}</td>
-                        </tr>
-                        <tr>Loader</tr>
-                        <tr v-for="(user,index) in users" :key="index" class="tableRow" style="bacground-color:grey;">
-                            <td class="tableColumn">{{ index }}</td>
-                            <td class="tableColumn"><img :src="`${user.avatar}`" alt="avatar" class="avatar" /></td>
-                            <td class="tableColumn">{{ user.first_name }}</td>
-                            <td class="tableColumn">{{ user.last_name}}</td>
-                        </tr>
-                    </table>
-                </div> -->
-            </div>
-        </div>
     </div>
 </template>
 <script>
@@ -92,6 +82,10 @@ export default {
                 {
                     text: this.$t("last_name"),
                     value:'last_name'
+                },
+                {
+                    text: this.$t("action"),
+                    value:'actions'
                 }
             ]
         }
@@ -120,6 +114,12 @@ export default {
             for(var i = 1; i<=totalPages;i++){
                 this.$store.dispatch("downloadPageData",i)
             }
+        },
+        go(interdId){
+            this.$router.push({name:"EditIntern", params:{id:Number(interdId)}});
+        },
+        deleteItem(item){
+            console.log(item)
         }
     }
 }
