@@ -31,6 +31,8 @@ export default new Vuex.Store({
         .then((response)=>{
           console.log(response)
           commit("LAST_RESPONSE_INFORMATION",response)
+        }).catch((err)=>{
+          commit("LAST_RESPONSE_INFORMATION",err)
         })
     },
     countPages({commit}){
@@ -61,5 +63,8 @@ export default new Vuex.Store({
     internList(state){
       return state.internList
     },
+    response(state){
+      return state.responseInformation
+    }
   }
 })

@@ -33,6 +33,11 @@ export default {
             avatar:null,
         };
     },
+    computed:{
+        responses(){
+            return this.$store.getters.response
+        }
+    },
     methods:{
         addNewIntern(){
             let internData = {
@@ -41,9 +46,15 @@ export default {
                 internEmail: this.avatar
             }
             this.$store.dispath('addNewIntern')
-                .then(()=>{
-                    console.log('dodano')
-                })
+            .then(()=>{
+                if(responses.headers.status>=200 && responses.headers.status<202) console.log('dodano')
+                else if(responses.headers.status>201 && responses.headers.status<300){
+                    console.log('coś poszło nie tak')
+                }
+                else if(responses.headers.status>=400 && responses.headers.status<500){
+                    console.log('nieoczekiwany błąd')
+                }
+            })
         }
     }
 }
