@@ -2,6 +2,7 @@
   "first_name":"First Name",
   "last_name":"Last Name",
   "avatar":"Avatar",
+  "avatar_url":"Avatar URL (https://..)",
   "action":"Action",
   "No":"No",
   "search":"Search",

@@ -59,17 +59,22 @@
                                 <v-text-field 
                                     v-model="form.avatarUrl" 
                                     :error-messages="errors"
-                                    :label='$t("avatar")' 
+                                    :label='$t("avatar_url")' 
                                     required
                                     clearable
                                 ></v-text-field>
                             </ValidationProvider>
                         </v-col>
                     </v-row>
-                    <v-row class="justify-end align-center">
-                        <v-btn outlined rounded type="submit">
-                            <span>{{$t("submit")}}</span>
-                        </v-btn>
+                    <v-row class="justify-center align-center">
+                        <v-col cols="8">
+                            <v-row class="justify-end align-center">
+                                <v-btn outlined rounded type="submit">
+                                    <v-icon left big color="#8asd11">mdi-plus</v-icon>
+                                    <span>{{$t("submit")}}</span>
+                                </v-btn>
+                            </v-row>
+                        </v-col>                        
                     </v-row>
                 </v-form>
             </ValidationObserver>
