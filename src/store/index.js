@@ -4,13 +4,22 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 const url = "https://reqres.in/api/users"
-//const url = 'https://reqres.in/app/'
 
-export default new Vuex.Store({
+const items =  new Vuex.Store({
   state: {
     internList:[],
+    editIntern:[]
   },
   mutations: {
+    UPDATE_INTERN_DATA(state,internData){
+      let index = state.internList.findIndex( intern => intern.id == internData.id)
+      state.internList[index].first_name = internData.first_name;
+      state.internList[index].last_name = internData.last_name;
+      state.internList[index].avatar = internData.avatar;
+    },
+    GET_DATA_ONE_INTERN(state,internData){
+      state.editIntern.push(internData);
+    },
     PUSH_DATA_TO_ARRAY(state,responseData){
       responseData.map((internData)=>{
         state.internList.push(internData)
@@ -18,6 +27,9 @@ export default new Vuex.Store({
     },
     NUMBER_OF_PAGES(state,data){
       state.pages=data
+    },
+    CLEAR_LIST(state){
+      state.internList=[]
     }
   },
   actions: {
@@ -40,6 +52,13 @@ export default new Vuex.Store({
           commit("PUSH_DATA_TO_ARRAY",response.data.data)
         })
     },
+    getOneIntern({commit},number){
+      return axios
+      .get(`${url}/${number}`)
+      .then((response)=>{
+        commit("GET_DATA_ONE_INTERN",response.data.data)
+      })
+    }
   },
   modules: {
   },
@@ -55,3 +74,4 @@ export default new Vuex.Store({
     }
   }
 })
+export default items;

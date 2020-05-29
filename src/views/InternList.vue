@@ -6,7 +6,7 @@
             </v-row>
             <v-row class="justify-center align-center">
                 <v-col cols="8">
-                     <v-text-field prepend-inner-icon="mdi-search" :label="$t('search')" clearable></v-text-field>
+                     <v-text-field v-model="search" prepend-inner-icon="mdi-search" :label="$t('search')" clearable></v-text-field>
                 </v-col>
             </v-row>
             <v-row class="justify-center align-center" v-if="!this.show">
@@ -20,6 +20,7 @@
                         :headers="headers"
                         :items="internList"
                         :items-per-page="10"
+                        :search="search"
                         class="elevation-1"
                     >
                     <template v-slot:item.avatar="{ item }">
@@ -29,19 +30,15 @@
                     />
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <v-icon
-                            small
-                            class="mr-2"
-                            @click="go(item.id)"
+                        <v-btn
+                            @click="go(item)"
+                            outlined
+                            fab
                         >
-                            mdi-pencil
-                        </v-icon>
-                        <v-icon
-                            small
-                            @click="deleteItem(item)"
-                        >
-                            mdi-delete
-                        </v-icon>
+                            <v-icon>
+                                mdi-pencil
+                            </v-icon>
+                        </v-btn>
                     </template>
                     </v-data-table>
                 </v-col>
@@ -56,6 +53,7 @@ export default {
         return{
             loader:false,
             show:false,
+            search:'',
         }
     },
     computed:{
@@ -91,8 +89,12 @@ export default {
         }
     },
     mounted(){
-        this.loader=true;
-        this.fillInternData()        
+        if(this.internList.length==0){
+            this.loader=true;
+            this.fillInternData()
+        }else{
+            this.show=true;
+        }
     },
     methods:{
         fillInternData(){
@@ -108,18 +110,15 @@ export default {
                 })
             }
             this.loader=false;
-             this.show=true;
+            this.show=true;
         },
         loopThroughtData(totalPages){
             for(var i = 1; i<=totalPages;i++){
                 this.$store.dispatch("downloadPageData",i)
             }
         },
-        go(interdId){
-            this.$router.push({name:"EditIntern", params:{intern_id:interdId}});
-        },
-        deleteItem(item){
-            console.log(item)
+        go(internData){
+            this.$router.push({name:"EditIntern", params:{intern_id:internData.id}});
         }
     }
 }

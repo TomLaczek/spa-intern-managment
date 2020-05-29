@@ -84,26 +84,27 @@
 <script>
 import { required, max, min, alpha, regex} from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+
 setInteractionMode('eager')
 extend('required', {
     ...required,
-    message: "test",
+    message: "This field is required..",
 })
 extend('alpha', {
     ...alpha,
-    message: "test",
+    message: "Only letters",
 })
 extend('regex',{
     ...regex,
-    message: "test",
+    message:  "You have used inncorrect character. Only letters, numbers, special signs (ex. https://abc.com/photo.jpg)",
 })
 extend('max', {
     ...max,
-    message: "test",
+    message: "Too many letters, max 20",
 })
 extend('min', {
     ...min,
-    message: "test",
+    message: "Add more letters, min 3",
 })
 export default {
     name:'addingIntern',
