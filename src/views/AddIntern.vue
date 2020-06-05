@@ -82,30 +82,7 @@
     </div>
 </template>
 <script>
-import { required, max, min, alpha, regex} from 'vee-validate/dist/rules'
-import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
-
-setInteractionMode('eager')
-extend('required', {
-    ...required,
-    message: "This field is required..",
-})
-extend('alpha', {
-    ...alpha,
-    message: "Only letters",
-})
-extend('regex',{
-    ...regex,
-    message:  "You have used inncorrect character. Only letters, numbers, special signs (ex. https://abc.com/photo.jpg)",
-})
-extend('max', {
-    ...max,
-    message: "Too many letters, max 20",
-})
-extend('min', {
-    ...min,
-    message: "Add more letters, min 3",
-})
+import {  ValidationObserver, ValidationProvider } from 'vee-validate'
 export default {
     name:'addingIntern',
      components: {
